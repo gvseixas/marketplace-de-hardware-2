@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Marketplace de Hardware</title>
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#111b2e;
+      --muted:#9fb0d0;
+      --text:#eaf1ff;
+      --primary:#6ea8fe;
+      --primary2:#7cf1c5;
+      --border:rgba(255,255,255,.10);
+      --danger:#ff6b6b;
+      --warn:#ffd166;
+      --success:#2ee59d;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+      --radius:14px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: radial-gradient(1200px 600px at 20% -10%, rgba(110,168,254,.20), transparent 60%),
+                  radial-gradient(900px 500px at 95% 0%, rgba(124,241,197,.18), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.35;
+    }
+
+    a{color:inherit; text-decoration:none}
+    .container{max-width:1100px; margin:0 auto; padding:18px}
+
+    header{
+      position:sticky; top:0; z-index:10;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(to bottom, rgba(11,18,32,.92), rgba(11,18,32,.70));
+      border-bottom:1px solid var(--border);
+    }
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:14px; padding:14px 18px;
+      max-width:1100px; margin:0 auto;
+    }
+
+    .brand{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px}
+    .logo{
+      width:36px; height:36px; border-radius:12px;
+      background: linear-gradient(135deg, rgba(110,168,254,.95), rgba(124,241,197,.85));
+      box-shadow: 0 12px 30px rgba(110,168,254,.22);
+    }
+
+    nav{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+    .navlink{
+      padding:10px 12px; border-radius:12px;
+      border:1px solid transparent;
+      color:var(--muted);
+      font-weight:650;
+    }
+    .navlink:hover{border-color:var(--border); background:rgba(255,255,255,.04); color:var(--text)}
+    .navlink.active{border-color:rgba(110,168,254,.45); background:rgba(110,168,254,.10); color:var(--text)}
+
+    .hero{
+      margin:18px 0;
+      border:1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015));
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow: var(--shadow);
+      display:flex; gap:16px; align-items:flex-start; justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .hero h1{margin:0; font-size:24px}
+    .hero p{margin:8px 0 0; color:var(--muted); max-width:650px}
+
+    .grid{display:grid; gap:14px}
+
+    .card{
+      border:1px solid var(--border);
+      background: linear-gradient(180deg, rgba(17,27,46,.92), rgba(17,27,46,.68));
+      border-radius:var(--radius);
+      padding:14px;
+      box-shadow: 0 8px 26px rgba(0,0,0,.25);
+    }
+
+    .meta{color:var(--muted); font-size:13px}
+    .title{margin:10px 0 6px; font-size:16px; font-weight:800}
+    .row{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap}
+
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 10px; border-radius:999px;
+      border:1px solid var(--border);
+      color:var(--muted);
+      font-weight:650;
+      font-size:13px;
+    }
+
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px;
+      border-radius:12px;
+      padding:10px 12px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      font-weight:750;
+      cursor:pointer;
+      user-select:none;
+    }
+    .btn:hover{background:rgba(255,255,255,.08)}
+    .btn.primary{border-color:rgba(110,168,254,.55); background:rgba(110,168,254,.14)}
+
+    .two-col{display:grid; grid-template-columns: 1.2fr .8fr; gap:14px}
+    @media (max-width: 860px){.two-col{grid-template-columns:1fr}}
+
+    .section-title{margin:0 0 10px; font-size:16px; font-weight:900}
+
+    .form{
+      display:grid; gap:12px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.03);
+      border-radius:var(--radius);
+      padding:14px;
+    }
+    .field label{display:block; color:var(--muted); font-size:13px; font-weight:800; margin-bottom:6px}
+    .field input, .field select, .field textarea{
+      width:100%; padding:10px 12px; border-radius:12px;
+      border:1px solid var(--border);
+      background:rgba(0,0,0,.10);
+      color:var(--text); outline:none;
+      font-size:14px;
+    }
+    .field textarea{min-height:110px; resize:vertical}
+    .field input:focus, .field select:focus, .field textarea:focus{border-color:rgba(110,168,254,.6)}
+
+    .footer-note{margin:24px 0 0; color:var(--muted); font-size:13px; text-align:center}
+    code{padding:2px 6px; border:1px solid var(--border); border-radius:10px; background:rgba(0,0,0,.12)}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <div class="brand" role="banner" aria-label="Marketplace de Hardware">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div style="font-size:14px; color:var(--muted); font-weight:800; letter-spacing:.2px">Marketplace</div>
+          <div style="font-size:18px; line-height:1.1">Hardware</div>
+        </div>
+      </div>
+
+      <nav aria-label="Navegação">
+        <a class="navlink" data-route="#home" href="#home">PÁGINA INICIAL</a>
+        <a class="navlink" data-route="#login" href="#login">LOGIN</a>
+        <a class="navlink" data-route="#cadastro" href="#cadastro">CADASTRAR</a>
+        <a class="navlink" data-route="#editar-perfil?id=1" href="#editar-perfil?id=1">EDITAR PERFIL</a>
+        <a class="navlink" data-route="#publicar-oferta" href="#publicar-oferta">PUBLICAR OFERTA</a>
+      </nav>
+
+    </div>
+  </header>
+
+  <main class="container" id="app">
+    <!-- Renderização dinâmica -->
+  </main>
+
+  <script>
+    // ===== JSON de dados do enunciado (para servir de base) =====
+    const db = {
+      "marketplace_hardware": {
+        "usuarios": [
+          {
+            "id_usuario": 1,
+            "nome_completo": "Carlos Gamer",
+            "email": "carlos.hardware@email.com",
+            "senha_hash": "a1b2c3d4e5f6",
+            "cpf_cnpj": "12345678900",
+            "telefone": "11999999999",
+            "reputacao_vendedor": 4.9,
+            "data_cadastro": "2023-10-15T14:30:00Z"
+          },
+          {
+            "id_usuario": 2,
+            "nome_completo": "Ana Desenvolvedora",
+            "email": "ana.dev@email.com",
+            "senha_hash": "f6e5d4c3b2a1",
+            "cpf_cnpj": "09876543211",
+            "telefone": "11988888888",
+            "reputacao_vendedor": 5.0,
+            "data_cadastro": "2024-01-10T10:15:00Z"
+          }
+        ],
+        "categorias_hardware": [
+          { "id_categoria": 1, "nome_categoria": "Placas de Vídeo", "slug": "placas-de-video" }
+        ],
+        "produtos": [
+          {
+            "id_produto": 101,
+            "id_vendedor": 1,
+            "id_categoria": 1,
+            "titulo": "RTX 3060 Ti Asus Dual 8GB",
+            "descricao": "Placa usada apenas para jogos aos finais de semana. Nunca aberta, selo intacto.",
+            "preco": 1850.00,
+            "condicao_uso": "Seminovo_Jogos",
+            "tem_caixa_original": true,
+            "status_anuncio": "Ativo",
+            "data_criacao": "2024-05-10T09:00:00Z",
+            "especificacao_tecnica": { "id_especificacao": 501, "marca": "Asus", "soquete": "PCIe 4.0", "tdp_watts": 200, "vram_gb": 8 }
+          }
+        ]
+      }
+    };
+
+    const m = db.marketplace_hardware;
+
+    // ===== Helpers =====
+    const safeText = (s) => (s === null || s === undefined) ? '' : String(s);
+
+    function parseHash(){
+      const raw = (location.hash || '#home').replace(/^#/, '');
+      const [path, queryString] = raw.split('?');
+      const query = Object.fromEntries(new URLSearchParams(queryString || ''));
+      return { path: path || 'home', query };
+    }
+
+    function getUser(id){
+      return m.usuarios.find(u => String(u.id_usuario) === String(id));
+    }
+
+    function getRouteTitle(path){
+      const map = {
+        home: 'PÁGINA INICIAL',
+        login: 'ENTRAR NA CONTA',
+        cadastro: 'CADASTRE-SE',
+        'editar-perfil': 'EDITAR PERFIL',
+        'publicar-oferta': 'PUBLICAR OFERTA'
+      };
+      return map[path] || 'Marketplace de Hardware';
+    }
+
+    function getRouteSubtitle(path){
+      const map = {
+        home: 'Entrar, cadastrar, publicar oferta e editar perfil com base no JSON informado.',
+        login: 'Informe seus dados para entrar na conta.',
+        cadastro: 'Crie sua conta para começar a usar o marketplace.',
+        'publicar-oferta': 'Publique uma oferta informando título, descrição, categoria, preço e anexos (demo).',
+        'editar-perfil': 'Atualize seus dados: nome, email e telefone.'
+      };
+      return map[path] || '';
+    }
+
+    function headerHero(path){
+      return `
+        <section class="hero" aria-label="Destaque">
+          <div>
+            <h1>${getRouteTitle(path)}</h1>
+            <p>${getRouteSubtitle(path)}</p>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end">
+            <span class="pill">Usuários: <b>${m.usuarios.length}</b></span>
+            <span class="pill">Categorias: <b>${m.categorias_hardware.length}</b></span>
+            <span class="pill">Produtos: <b>${m.produtos.length}</b></span>
+          </div>
+        </section>
+      `;
+    }
+
+    // ===== Telas (exatamente as pedidas no JSON de transcrição) =====
+    function renderHome(){
+      return `
+        ${headerHero('home')}
+        <div class="two-col">
+          <section class="card">
+            <div class="section-title">Navegação</div>
+            <div class="meta">Use os botões no topo para abrir as telas:</div>
+            <ul class="meta" style="margin:10px 0; padding-left:18px; line-height:1.8">
+              <li><b>LOGIN</b> → Entrar na conta</li>
+              <li><b>CADASTRAR</b> → Criar conta</li>
+              <li><b>PUBLICAR OFERTA</b> → Publicar uma oferta</li>
+              <li><b>EDITAR PERFIL</b> → Salvar alterações</li>
+            </ul>
+            <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap">
+              <a class="btn primary" href="#login">ENTRAR NA CONTA</a>
+              <a class="btn" href="#cadastro">CADASTRE-SE</a>
+              <a class="btn" href="#publicar-oferta">PUBLICAR OFERTA</a>
+              <a class="btn" href="#editar-perfil?id=1">EDITAR PERFIL</a>
+            </div>
+          </section>
+
+          <aside class="form">
+            <div class="field">
+              <label>Demo</label>
+              <div class="meta">As telas são HTML + JS (sem backend) e validam visualmente os campos pedidos.</div>
+            </div>
+            <div class="field">
+              <label>Rota atual</label>
+              <div class="meta"><code>location.hash</code></div>
+            </div>
+          </aside>
+        </div>
+      `;
+    }
+
+    function renderLogin(){
+      return `
+        ${headerHero('login')}
+        <div class="two-col">
+          <section class="card">
+            <div class="section-title">ENTRAR NA CONTA</div>
+            <form class="form" onsubmit="return false">
+              <div class="field">
+                <label>EMAIL</label>
+                <input type="email" placeholder="email@exemplo.com" autocomplete="email" />
+              </div>
+              <div class="field">
+                <label>SENHA</label>
+                <input type="password" placeholder="Sua senha" autocomplete="current-password" />
+              </div>
+              <div style="display:flex; gap:10px; flex-wrap:wrap">
+                <button class="btn primary" type="submit">ENTRAR</button>
+                <a class="btn" href="#cadastro">Ir para CADASTRAR</a>
+              </div>
+            </form>
+          </section>
+
+          <aside class="form">
+            <div class="field">
+              <label>Dica</label>
+              <div class="meta">Use os dados do JSON para referência: <b>${safeText(m.usuarios[0]?.email)}</b></div>
+            </div>
+            <div class="field">
+              <label>Sem backend</label>
+              <div class="meta">O botão apenas simula a ação (demo).</div>
+            </div>
+          </aside>
+        </div>
+      `;
+    }
+
+    function renderCadastro(){
+      return `
+        ${headerHero('cadastro')}
+        <div class="two-col">
+          <section class="card">
+            <div class="section-title">CADASTRE-SE</div>
+            <form class="form" onsubmit="return false">
+              <div class="field">
+                <label>NOME</label>
+                <input type="text" placeholder="Seu nome" autocomplete="name" />
+              </div>
+              <div class="field">
+                <label>EMAIL</label>
+                <input type="email" placeholder="email@exemplo.com" autocomplete="email" />
+              </div>
+              <div class="field">
+                <label>SENHA</label>
+                <input type="password" placeholder="Crie uma senha" autocomplete="new-password" />
+              </div>
+              <div style="display:flex; gap:10px; flex-wrap:wrap">
+                <button class="btn primary" type="submit">CRIAR CONTA</button>
+                <a class="btn" href="#login">Ir para LOGIN</a>
+              </div>
+            </form>
+          </section>
+
+          <aside class="form">
+            <div class="field">
+              <label>Objetivo</label>
+              <div class="meta">Após cadastrar, você poderá publicar ofertas e editar perfil.</div>
+            </div>
+          </aside>
+        </div>
+      `;
+    }
+
+    function renderPublicarOferta(){
+      const categorias = m.categorias_hardware;
+      return `
+        ${headerHero('publicar-oferta')}
+        <div class="two-col">
+          <section class="card">
+            <div class="section-title">PUBLICAR OFERTA</div>
+            <form class="form" onsubmit="return false">
+              <div class="field">
+                <label>TÍTULO DO PRODUTO</label>
+                <input type="text" placeholder="Ex.: RTX 3060 Ti" />
+              </div>
+
+              <div class="field">
+                <label>DESCRIÇÃO</label>
+                <textarea placeholder="Descreva o produto e estado de uso" ></textarea>
+              </div>
+
+              <div class="field">
+                <label>CATEGORIA</label>
+                <select>
+                  <option value="">SELECIONE</option>
+                  ${categorias.map(c => `<option value="${safeText(c.id_categoria)}">${safeText(c.nome_categoria)}</option>`).join('')}
+                </select>
+              </div>
+
+              <div class="field">
+                <label>PREÇO</label>
+                <input type="number" step="0.01" placeholder="0.00" />
+              </div>
+
+              <div class="field">
+                <label>ESTADO DO PRODUTO</label>
+                <select>
+                  <option value="">SELECIONE</option>
+                  <option value="Seminovo_Jogos">Seminovo (Jogos)</option>
+                  <option value="Seminovo_uso_diario">Seminovo (Uso diário)</option>
+                  <option value="Novo">Novo</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label>IMAGEM DO PRODUTO</label>
+                <input type="file" accept="image/*" />
+              </div>
+
+              <div class="field">
+                <label>ARQUIVO</label>
+                <input type="file" />
+              </div>
+
+              <div style="display:flex; gap:10px; flex-wrap:wrap">
+                <button class="btn primary" type="submit">PUBLICAR OFERTA</button>
+                <a class="btn" href="#home">Voltar</a>
+              </div>
+            </form>
+          </section>
+
+          <aside class="form">
+            <div class="field">
+              <label>Campos</label>
+              <ul class="meta" style="margin:8px 0; padding-left:18px; line-height:1.8">
+                <li>Título</li>
+                <li>Descrição</li>
+                <li>Categoria (select)</li>
+                <li>Preço</li>
+                <li>Estado do produto (select)</li>
+                <li>Imagem (file)</li>
+                <li>Arquivo (file)</li>
+              </ul>
+            </div>
+          </aside>
+        </div>
+      `;
+    }
+
+    function renderEditarPerfil(){
+      const { query } = parseHash();
+      const user = getUser(query.id || 1);
+
+      return `
+        ${headerHero('editar-perfil')}
+        <div class="two-col">
+          <section class="card">
+            <div class="section-title">EDITAR PERFIL</div>
+            <form class="form" onsubmit="return false">
+              <div class="field">
+                <label>NOME</label>
+                <input type="text" value="${safeText(user?.nome_completo || '')}" />
+              </div>
+              <div class="field">
+                <label>EMAIL</label>
+                <input type="email" value="${safeText(user?.email || '')}" />
+              </div>
+              <div class="field">
+                <label>TELEFONE</label>
+                <input type="text" value="${safeText(user?.telefone || '')}" />
+              </div>
+
+              <div style="margin-top:4px" class="meta">
+                <div>elementos adicionais:</div>
+                <ul style="margin:6px 0; padding-left:18px">
+                  <li>↑ 810 (demo)</li>
+                </ul>
+              </div>
+
+              <div style="display:flex; gap:10px; flex-wrap:wrap">
+                <button class="btn primary" type="submit">SALVAR ALTERAÇÕES</button>
+                <a class="btn" href="#home">Voltar</a>
+              </div>
+            </form>
+          </section>
+
+          <aside class="form">
+            <div class="field">
+              <label>Referência no JSON</label>
+              <div class="meta">Usuário ID: <b>${safeText(user?.id_usuario ?? '')}</b></div>
+              <div class="meta">Reputação do vendedor: <b>${safeText(user?.reputacao_vendedor ?? '—')}</b></div>
+            </div>
+          </aside>
+        </div>
+      `;
+    }
+
+    // ===== Router =====
+    function render(){
+      const { path } = parseHash();
+      const app = document.getElementById('app');
+      if (!app) return;
+
+      // Active nav
+      document.querySelectorAll('a.navlink[data-route]').forEach(a => {
+        const r = a.getAttribute('data-route');
+        const normalized = r.startsWith('#') ? r.slice(1) : r;
+        a.classList.toggle('active', normalized === path);
+      });
+
+      let html = '';
+      if (path === 'home') html = renderHome();
+      else if (path === 'login') html = renderLogin();
+      else if (path === 'cadastro') html = renderCadastro();
+      else if (path === 'publicar-oferta') html = renderPublicarOferta();
+      else if (path === 'editar-perfil') html = renderEditarPerfil();
+      else html = renderHome();
+
+      app.innerHTML = html;
+    }
+
+    window.addEventListener('hashchange', render);
+    render();
+  </script>
+</body>
+</html>
+
